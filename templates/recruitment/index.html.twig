@@ -15,6 +15,7 @@
                 <th>PhoneNumber</th>
                 <th>ExpectedSalary</th>
                 <th>Position</th>
+                <th>CV</th>
                 <th>Level</th>
                 <th>actions</th>
             </tr>
@@ -29,6 +30,11 @@
                 <td>{{ recruitment.phoneNumber }}</td>
                 <td>{{ recruitment.expectedSalary }}</td>
                 <td>{{ recruitment.position }}</td>
+                <td>
+                    {% if recruitment.cv %}
+                        <a href="{{ asset('uploads/cv/' ~ recruitment.cv) }}"> CV </a>
+                    {% endif %}
+                </td>
                 <td>{{ recruitment.level }}</td>
                 <td>
                     <a href="{{ path('app_recruitment_show', {'id': recruitment.id}) }}">show</a>

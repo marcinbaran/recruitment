@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Recruitment;
 use App\Form\RecruitmentType;
 use App\Repository\RecruitmentRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,16 @@ class RecruitmentController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private ValidatorInterface $validator;
+    private FileUploader $fileUploader;
 
-    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
+        FileUploader $fileUploader
+    ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
+        $this->fileUploader = $fileUploader;
     }
 
     #[Route('/', name: 'app_recruitment_index', methods: ['GET'])]
@@ -45,6 +51,12 @@ class RecruitmentController extends AbstractController
             $expectedSalary = $request->request->all()['recruitment']['expectedSalary'];
             $recruitment->setLevel($this->generateLevel($expectedSalary));
             $recruitment->setDisplayed(false);
+
+            $cvFile = $form->get('brochure')->getData();
+            if ($cvFile) {
+                $cvFileName = $this->fileUploader->upload($cvFile);
+                $recruitment->setCv($cvFileName);
+            }
 
             $this->entityManager->persist($recruitment);
             $this->entityManager->flush();

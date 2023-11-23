@@ -37,6 +37,9 @@ class Recruitment
     #[ORM\Column(nullable: true)]
     private ?bool $displayed = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cv = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,5 +123,15 @@ class Recruitment
     public function setDisplayed(?bool $displayed): void
     {
         $this->displayed = $displayed;
+    }
+
+    public function getCv(): ?string
+    {
+        return $this->cv;
+    }
+
+    public function setCv(?string $cv): void
+    {
+        $this->cv = $cv;
     }
 }
