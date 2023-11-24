@@ -23,11 +23,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link" href="{{ path('app_recruitment_index') }}">Recruitment list</a>
+                        {% if app.user %}
+                            <a class="nav-link" href="{{ path('app_recruitment_index') }}">Recruitment list</a>
+                        {% endif %}
                         <a class="nav-link" href="{{ path('app_recruitment_new') }}">New Recruitment</a>
+
                     </div>
                 </div>
             </div>
+            <span class="navbar-text">
+                <a class="nav-link" href="{{ app.user ? 'logout' : 'login' }}">{{ app.user ? 'Logout' : 'Login' }}</a>
+            </span>
         </nav>
 
         {% for message in app.flashes('success') %}
