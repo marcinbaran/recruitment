@@ -86,7 +86,6 @@ class RecruitmentApiController extends AbstractController
         string $orderBy,
         string $how
     ): JsonResponse {
-
         $recruitment = $recruitmentRepository->searchDisplayedRecruitments(false, $orderBy, $how);
 
         if (!$recruitment) {
