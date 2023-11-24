@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Recruitment;
 use App\Form\RecruitmentType;
 use App\Repository\RecruitmentRepository;
-use App\Service\FileUploader;
+use App\Service\PdfUploader;
 use App\Traits\GenerateLevel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,16 +20,16 @@ class RecruitmentController extends AbstractController
     use GenerateLevel;
     private EntityManagerInterface $entityManager;
     private ValidatorInterface $validator;
-    private FileUploader $fileUploader;
+    private PdfUploader $pdfUploader;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
-        FileUploader $fileUploader
+        PdfUploader $fileUploader
     ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
-        $this->fileUploader = $fileUploader;
+        $this->pdfUploader = $fileUploader;
     }
 
     #[Route('/', name: 'app_recruitment_index', methods: ['GET'])]
@@ -56,7 +56,7 @@ class RecruitmentController extends AbstractController
 
             $cvFile = $form->get('brochure')->getData();
             if ($cvFile) {
-                $cvFileName = $this->fileUploader->upload($cvFile);
+                $cvFileName = $this->pdfUploader->upload($cvFile);
                 $recruitment->setCv($cvFileName);
             }
 
