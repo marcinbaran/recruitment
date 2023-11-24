@@ -54,7 +54,7 @@ class RecruitmentController extends AbstractController
             $recruitment->setLevel($this->generateLevel($expectedSalary));
             $recruitment->setDisplayed(false);
 
-            $cvFile = $form->get('brochure')->getData();
+            $cvFile = $form->get('cv')->getData();
             if ($cvFile) {
                 $cvFileName = $this->pdfUploader->upload($cvFile);
                 $recruitment->setCv($cvFileName);

@@ -22,7 +22,7 @@ class RecruitmentType extends AbstractType
             ->add('phoneNumber')
             ->add('expectedSalary')
             ->add('position')
-            ->add('brochure', FileType::class, [
+            ->add('cv', FileType::class, [
                 'label' => 'CV (PDF file)',
                 'mapped' => false,
                 'required' => false,
