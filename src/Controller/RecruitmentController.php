@@ -6,6 +6,7 @@ use App\Entity\Recruitment;
 use App\Form\RecruitmentType;
 use App\Repository\RecruitmentRepository;
 use App\Service\FileUploader;
+use App\Traits\GenerateLevel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/recruitment')]
 class RecruitmentController extends AbstractController
 {
+    use GenerateLevel;
     private EntityManagerInterface $entityManager;
     private ValidatorInterface $validator;
     private FileUploader $fileUploader;
@@ -83,18 +85,5 @@ class RecruitmentController extends AbstractController
         return $this->render('recruitment/show.html.twig', [
             'recruitment' => $recruitment,
         ]);
-    }
-
-    private function generateLevel(int $expectedSalary): string
-    {
-        if ($expectedSalary < 5000) {
-            return 'Junior';
-        }
-
-        if ($expectedSalary < 10000) {
-            return 'Regular';
-        }
-
-        return 'Senior';
     }
 }

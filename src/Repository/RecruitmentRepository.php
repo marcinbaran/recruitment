@@ -20,4 +20,14 @@ class RecruitmentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Recruitment::class);
     }
+
+    public function searchDisplayedRecruitments(bool $displayed, string $orderBy = 'id', string $sortBy = 'ASC') :array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.displayed LIKE :query')
+            ->setParameter('query',  $displayed)
+            ->orderBy('r.'.$orderBy, $sortBy)
+            ->getQuery()
+            ->getResult();
+    }
 }

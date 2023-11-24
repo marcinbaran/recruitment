@@ -1,3 +1,13 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+showNotDisplayed:
+    path: /api/v1/recruitment/showNotDisplayed/{orderBy}/{how}
+    controller: App\Controller\Api\RecruitmentApiController::showNotDisplayedRecruitment
+    defaults: { orderBy: id, how: ASC }
+
+showDisplayed:
+    path: /api/v1/recruitment/showDisplayed/{orderBy}/{how}
+    controller: App\Controller\Api\RecruitmentApiController::showDisplayedRecruitment
+    defaults: { orderBy: id, how: ASC }
