@@ -21,13 +21,47 @@ class RecruitmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Recruitment::class);
     }
 
-    public function searchDisplayedRecruitments(bool $displayed, string $orderBy = 'id', string $sortBy = 'ASC') :array
+    public function getDisplayedRecruitments(?string $field, ?string $sort): array
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.displayed LIKE :query')
-            ->setParameter('query',  $displayed)
-            ->orderBy('r.'.$orderBy, $sortBy)
-            ->getQuery()
-            ->getResult();
+        if (!$field) {
+            $field = 'id';
+        }
+
+        if (!$sort) {
+            $sort = 'ASC';
+        }
+
+        try {
+            return $this->createQueryBuilder('r')
+                ->where('r.displayed LIKE :query')
+                ->setParameter('query',  true)
+                ->orderBy('r.'.$field, $sort)
+                ->getQuery()
+                ->getResult();
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function getNonDisplayedRecruitments(?string $field, ?string $sort): array
+    {
+        if (!$field) {
+            $field = 'id';
+        }
+
+        if (!$sort) {
+            $sort = 'ASC';
+        }
+
+        try {
+            return $this->createQueryBuilder('r')
+                ->where('r.displayed LIKE :query')
+                ->setParameter('query',  false)
+                ->orderBy('r.'.$field, $sort)
+                ->getQuery()
+                ->getResult();
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 }

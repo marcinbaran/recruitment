@@ -80,13 +80,14 @@ class RecruitmentApiController extends AbstractController
         return new JsonResponse($jsonObject, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/showNotDisplayed/{orderBy}/{how}', name: 'api_recruitment_show_not_displayed', methods: ['GET'])]
+    #[Route('/showNotDisplayed', name: 'api_recruitment_show_not_displayed', methods: ['GET'])]
     public function showNotDisplayedRecruitment(
-        RecruitmentRepository $recruitmentRepository,
-        string $orderBy,
-        string $how
+        Request $request,
+        RecruitmentRepository $recruitmentRepository
     ): JsonResponse {
-        $recruitment = $recruitmentRepository->searchDisplayedRecruitments(false, $orderBy, $how);
+        $field = $request->query->get('field');
+        $sort = $request->query->get('sort');
+        $recruitment = $recruitmentRepository->getDisplayedRecruitments($field, $sort);
 
         if (!$recruitment) {
             return $this->json([
@@ -99,13 +100,15 @@ class RecruitmentApiController extends AbstractController
         return new JsonResponse($jsonObject, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/showDisplayed/{orderBy}/{how}', name: 'api_recruitment_show_displayed', methods: ['GET'])]
+    #[Route('/showDisplayed', name: 'api_recruitment_show_displayed', methods: ['GET'])]
     public function showDisplayedRecruitment(
-        RecruitmentRepository $recruitmentRepository,
-        string $orderBy,
-        string $how
+        Request $request,
+        RecruitmentRepository $recruitmentRepository
     ): JsonResponse {
-        $recruitment = $recruitmentRepository->searchDisplayedRecruitments(true, $orderBy, $how);
+        $field = $request->query->get('field');
+        $sort = $request->query->get('sort');
+
+        $recruitment = $recruitmentRepository->getNonDisplayedRecruitments($field, $sort);
 
         if (!$recruitment) {
             return $this->json([
